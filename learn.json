@@ -1,15 +1,15 @@
 {
   "title": {
-    "en": "Machine Learning Python Template",
-    "es": "Plantilla para Aprendizaje de Máquina con Python"
+    "en": "ML Web Application with Flask",
+    "es": "Aplicacion web de ML con Flask"
   },
   "description": {
-    "us": "A standardized, but flexible project structure for doing and sharing data science and machine learning work.",
-    "es": "Una estructura de proyecto estandarizada, pero flexible, para realizar y compartir trabajos de ciencia de datos y aprendizaje de máquina."
+    "en": "Iris species classifier trained with scikit-learn and deployed through a Flask web interface prepared for Render.",
+    "es": "Clasificador de especies Iris entrenado con scikit-learn e integrado en una interfaz web Flask preparada para Render."
   },
-  "repository": "https://github.com/4GeeksAcademy/machine-learning-python-template",
-  "preview": "https://github.com/4GeeksAcademy/machine-learning-python-template/blob/main/preview.jpg?raw=true",
-  "projectType": "template",
+  "repository": "https://github.com/4GeeksAcademy/Tutorial-de-una-aplicaci-n-web-de-ML-con-Flask-Dragcessa1998",
+  "preview": "reports/figures/app_banner.png",
+  "projectType": "project",
   "difficulty": "beginner",
-  "technologies": ["Python", "Machine-Learning", "Datascience", "ai-engineering"]
+  "technologies": ["Python", "Flask", "Machine-Learning", "Render", "scikit-learn"]
 }

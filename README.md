@@ -1,112 +1,124 @@
-# Data Science Project Boilerplate
+# ML Web Application with Flask
 
-This boilerplate is designed to kickstart data science projects by providing a basic setup for database connections, data processing, and machine learning model development. It includes a structured folder organization for your datasets and a set of pre-defined Python packages necessary for most data science tasks.
+![Project banner](reports/figures/app_banner.png)
+
+**Language / Idioma:** English | [Español](README.es.md)
+
+This project trains a Machine Learning model with the **UCI Iris Dataset** and integrates it into a **Flask** web application. The interface accepts flower measurements and predicts the Iris species: `setosa`, `versicolor`, or `virginica`.
+
+## Goals
+
+- Find and understand a simple dataset.
+- Train and optimize a Machine Learning model.
+- Analyze results and feature importance.
+- Build a Flask web interface for the model.
+- Prepare the project for Render deployment.
+
+## Dataset
+
+The project uses the **UCI Iris Dataset**, loaded through `sklearn.datasets.load_iris`.
+
+Features:
+
+- `sepal_length_cm`
+- `sepal_width_cm`
+- `petal_length_cm`
+- `petal_width_cm`
+
+Target:
+
+- `species`
+
+## Model
+
+The training pipeline uses:
+
+- `StandardScaler`
+- `RandomForestClassifier`
+- `GridSearchCV` for hyperparameter optimization
+
+Results are saved in:
+
+- `models/iris_metrics.json`
+- `reports/figures/`
+
+## Flask App
+
+Main app:
+
+```text
+app.py
+```
+
+Routes:
+
+- `/` prediction form.
+- `/health` service check.
 
 ## Structure
 
-The project is organized as follows:
+```text
+.
+├── app.py
+├── data/
+│   ├── raw/iris.csv
+│   └── processed/
+│       ├── train.csv
+│       └── test.csv
+├── models/
+│   ├── iris_classifier.joblib
+│   └── iris_metrics.json
+├── reports/figures/
+│   ├── app_banner.png
+│   ├── feature_importance.png
+│   ├── petal_scatter.png
+│   └── species_distribution.png
+├── src/
+│   ├── app.py
+│   ├── explore.ipynb
+│   └── utils.py
+├── static/styles.css
+├── templates/index.html
+├── Procfile
+├── render.yaml
+└── requirements.txt
+```
 
-- **`src/app.py`** → Main Python script where your project will run.
-- **`src/explore.ipynb`** → Notebook for exploration and testing. Once exploration is complete, migrate the clean code to `app.py`.
-- **`src/utils.py`** → Auxiliary functions, such as database connection.
-- **`requirements.txt`** → List of required Python packages.
-- **`models/`** → Will contain your SQLAlchemy model classes.
-- **`data/`** → Stores datasets at different stages:
-  - **`data/raw/`** → Raw data.
-  - **`data/interim/`** → Temporarily transformed data.
-  - **`data/processed/`** → Data ready for analysis.
-
-
-## ⚡ Initial Setup in Codespaces (Recommended)
-
-No manual setup is required, as **Codespaces is automatically configured** with the predefined files created by the academy for you. Just follow these steps:
-
-1. **Wait for the environment to configure automatically**.
-   - All necessary packages and the database will install themselves.
-   - The automatically created `username` and `db_name` are in the **`.env`** file at the root of the project.
-2. **Once Codespaces is ready, you can start working immediately**.
-
-
-## 💻 Local Setup (Only if you can't use Codespaces)
-
-**Prerequisites**
-
-Make sure you have Python 3.11+ installed on your machine. You will also need pip to install the Python packages.
-
-**Installation**
-
-Clone the project repository to your local machine.
-
-Navigate to the project directory and install the required Python packages:
+## Run Locally
 
 ```bash
 pip install -r requirements.txt
-```
-
-**Create a database (if necessary)**
-
-Create a new database within the Postgres engine by customizing and executing the following command:
-
-```bash
-$ psql -U postgres -c "DO \$\$ BEGIN 
-    CREATE USER my_user WITH PASSWORD 'my_password'; 
-    CREATE DATABASE my_database OWNER my_user; 
-END \$\$;"
-```
-Connect to the Postgres engine to use your database, manipulate tables, and data:
-
-```bash
-$ psql -U my_user -d my_database
-```
-
-Once inside PSQL, you can create tables, run queries, insert, update, or delete data, and much more!
-
-**Environment Variables**
-
-Create a .env file in the root directory of the project to store your environment variables, such as your database connection string:
-
-```makefile
-DATABASE_URL="postgresql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DB_NAME>"
-
-#example
-DATABASE_URL="postgresql://my_user:my_password@localhost:5432/my_database"
-```
-
-## Running the Application
-
-To run the application, execute the app.py script from the root directory of the project:
-
-```bash
 python src/app.py
+python app.py
 ```
 
-## Adding Models
+Then open:
 
-To add SQLAlchemy model classes, create new Python script files within the models/ directory. These classes should be defined according to your database schema.
-
-Example model definition (`models/example_model.py`):
-
-```py
-from sqlalchemy.orm import declarative_base
-from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column
-
-Base = declarative_base()
-
-class ExampleModel(Base):
-    __tablename__ = 'example_table'
-    id: Mapped[int] = mapped_column(primary_key=True)
-    username: Mapped[str] = mapped_column(unique=True)
+```text
+http://localhost:5000
 ```
 
-## Working with Data
+## Render
 
-You can place your raw datasets in the data/raw directory, intermediate datasets in data/interim, and processed datasets ready for analysis in data/processed.
+The repository includes `Procfile` and `render.yaml`.
 
-To process data, you can modify the app.py script to include your data processing steps, using pandas for data manipulation and analysis.
+Steps:
 
-## Contributors
+1. Create a new Web Service on Render.
+2. Connect this GitHub repository.
+3. Use:
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `gunicorn app:app`
+4. Paste the public Render URL here after creating the service.
 
-This template was built as part of the [Data Science and Machine Learning Bootcamp](https://4geeksacademy.com/us/coding-bootcamps/datascience-machine-learning) by 4Geeks Academy by [Alejandro Sanchez](https://twitter.com/alesanchezr) and many other contributors. Learn more about [4Geeks Academy BootCamp programs](https://4geeksacademy.com/us/programs) here.
+Render URL:
 
-Other templates and resources like this can be found on the school's GitHub page.
+```text
+Pending after creating the Render service.
+```
+
+## External Resources
+
+- UCI Iris Dataset via scikit-learn.
+- Flask documentation.
+- Render Web Services documentation.

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Iris ML Classifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <main class="layout">
+      <section class="intro">
+        <p class="eyebrow">Machine Learning + Flask</p>
+        <h1>Iris species predictor</h1>
+        <p class="lede">
+          Enter four flower measurements and the trained model will classify the sample as
+          setosa, versicolor, or virginica.
+        </p>
+        <div class="facts">
+          <span>UCI Iris Dataset</span>
+          <span>Random Forest</span>
+          <span>Render-ready</span>
+        </div>
+      </section>
+
+      <section class="tool" aria-label="Prediction form">
+        <form method="post" class="prediction-form">
+          {% for name, label in fields.items() %}
+            <label>
+              <span>{{ label }}</span>
+              <input
+                type="number"
+                name="{{ name }}"
+                value="{{ values[name] }}"
+                step="0.1"
+                min="0"
+                required
+              >
+            </label>
+          {% endfor %}
+          <button type="submit">Predict species</button>
+        </form>
+
+        {% if error %}
+          <div class="message error">{{ error }}</div>
+        {% endif %}
+
+        {% if result %}
+          <div class="result">
+            <p class="result-label">Predicted species</p>
+            <h2>{{ result.prediction }}</h2>
+            <div class="probabilities">
+              {% for class_name, probability in result.probabilities.items() %}
+                <div class="probability-row">
+                  <span>{{ class_name }}</span>
+                  <meter value="{{ probability }}" min="0" max="1"></meter>
+                  <strong>{{ (probability * 100) | round(1) }}%</strong>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      </section>
+    </main>
+  </body>
+</html>
