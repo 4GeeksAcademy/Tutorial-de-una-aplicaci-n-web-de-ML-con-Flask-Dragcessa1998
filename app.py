@@ -13,7 +13,11 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 from utils import FEATURE_COLUMNS, predict_species  # noqa: E402
 
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    template_folder=str(PROJECT_ROOT / "templates"),
+    static_folder=str(PROJECT_ROOT / "static"),
+)
 MODEL_PATH = PROJECT_ROOT / "models" / "iris_classifier.joblib"
 
 
