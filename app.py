@@ -4,7 +4,8 @@ import sys
 from pathlib import Path
 
 import joblib
-from flask import Flask, render_template, request
+from flask import Flask, render_template, render_template_string, request
+from jinja2 import TemplateNotFound
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -15,10 +16,12 @@ from utils import FEATURE_COLUMNS, predict_species  # noqa: E402
 
 app = Flask(
     __name__,
+    root_path=str(PROJECT_ROOT),
     template_folder=str(PROJECT_ROOT / "templates"),
     static_folder=str(PROJECT_ROOT / "static"),
 )
 MODEL_PATH = PROJECT_ROOT / "models" / "iris_classifier.joblib"
+INDEX_TEMPLATE_PATH = PROJECT_ROOT / "templates" / "index.html"
 
 
 FIELD_LABELS = {
@@ -44,6 +47,14 @@ def load_model_artifact() -> dict:
     return joblib.load(MODEL_PATH)
 
 
+def render_index_page(**context):
+    try:
+        return render_template("index.html", **context)
+    except TemplateNotFound:
+        template_source = INDEX_TEMPLATE_PATH.read_text(encoding="utf-8")
+        return render_template_string(template_source, **context)
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     result = None
@@ -63,8 +74,7 @@ def index():
         except Exception as exc:  # Keep UI helpful on deployment misconfiguration.
             error = str(exc)
 
-    return render_template(
-        "index.html",
+    return render_index_page(
         fields=FIELD_LABELS,
         values=form_values,
         result=result,
@@ -75,6 +85,19 @@ def index():
 @app.route("/health")
 def health():
     return {"status": "ok", "model_available": MODEL_PATH.exists()}
+
+
+@app.route("/debug-paths")
+def debug_paths():
+    return {
+        "project_root": str(PROJECT_ROOT),
+        "template_folder": str(app.template_folder),
+        "static_folder": str(app.static_folder),
+        "index_template_path": str(INDEX_TEMPLATE_PATH),
+        "index_template_exists": INDEX_TEMPLATE_PATH.exists(),
+        "model_path": str(MODEL_PATH),
+        "model_available": MODEL_PATH.exists(),
+    }
 
 
 if __name__ == "__main__":
